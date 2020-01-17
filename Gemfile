@@ -1,3 +1,5 @@
+ruby '2.6.5'
+
 source "https://rubygems.org"
 
 gem "rake", "~> 12.0"
@@ -10,3 +12,7 @@ gem 'sinatra'
 gem 'sinatra-cross_origin'
 gem 'bundler'
 gem 'whenever'
+
+group :production do
+    gem 'puma'
+end
