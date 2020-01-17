@@ -18,7 +18,7 @@ def download_songs(song_list)
             extract_audio: true,
             output: "#{__dir__.to_s}/#{temp_dir_name}/%(title)s.%(ext)s",
         }
-        YoutubeDL.download "ytsearch:#{song}", options
+        YoutubeDL.download "ytsearch:#{song}"
     }
 
     zipfile_name = "#{__dir__.to_s}/#{temp_dir_name}/YourSongs.zip"
