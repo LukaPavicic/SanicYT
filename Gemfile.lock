@@ -1,0 +1,43 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    chronic (0.10.2)
+    colorize (0.8.1)
+    fileutils (1.4.1)
+    json (2.3.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    rack (2.1.1)
+    rack-protection (2.0.8.1)
+      rack
+    rake (12.3.3)
+    ruby2_keywords (0.0.2)
+    rubyzip (2.0.0)
+    sinatra (2.0.8.1)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.8.1)
+      tilt (~> 2.0)
+    sinatra-cross_origin (0.4.0)
+    tilt (2.0.10)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
+    win32console (1.3.2)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  bundler
+  colorize
+  fileutils
+  json
+  rake (~> 12.0)
+  rubyzip
+  sinatra
+  sinatra-cross_origin
+  whenever
+  win32console
+
+BUNDLED WITH
+   2.1.4
