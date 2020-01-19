@@ -14,11 +14,11 @@ def download_songs(song_list)
         # formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + temp_dir_name + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song + '"'
         # system formatted_command
         options = {
-            # audio_format: :mp3,
+            audio_format: :mp3,
             extract_audio: true,
             output: "#{__dir__.to_s}/#{temp_dir_name}/%(title)s.%(ext)s",
         }
-        YoutubeDL.download "ytsearch:#{song}"
+        YoutubeDL.download "ytsearch:#{song}", options
     }
 
     zipfile_name = "#{__dir__.to_s}/#{temp_dir_name}/YourSongs.zip"
