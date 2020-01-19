@@ -4,21 +4,14 @@ require 'json'
 require 'zip'
 require 'rubygems'
 require 'fileutils'
-require 'youtube-dl.rb'
 
 def download_songs(song_list)    
     time = Time.new
     temp_dir_name = "songs" + rand(100000..999999).to_s + time.strftime("%d%m%Y%H%M%S")
     Dir.mkdir(temp_dir_name)
     song_list.each { |song|
-        # formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + temp_dir_name + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song + '"'
-        # system formatted_command
-        options = {
-            audio_format: :mp3,
-            extract_audio: true,
-            output: "#{__dir__.to_s}/#{temp_dir_name}/%(title)s.%(ext)s",
-        }
-        YoutubeDL.download "ytsearch:#{song}", options
+        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + temp_dir_name + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song + '"'
+        system formatted_command
     }
 
     zipfile_name = "#{__dir__.to_s}/#{temp_dir_name}/YourSongs.zip"
