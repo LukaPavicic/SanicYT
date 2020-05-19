@@ -43,7 +43,7 @@ set :expose_headers, ['Content-Type']
 set :protection, :origin_whitelist => ['http://localhost:3000']
 
 get '/' do 
-    'Henlo!'    
+    'Welcome to SanicYT API! What are you doing here?'    
 end
 
 get '/download_songs/:folder_name' do |folder_name|
