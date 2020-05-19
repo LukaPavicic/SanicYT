@@ -2,7 +2,7 @@
 #### Really fast and easy to use YouTube songs downloader 
 
 ## About 
-SanicYT is a web service which allows you to download songs from YouTube really fast. Usually you would go to 
+SanicYT is a free web service which allows you to download songs from YouTube really fast. Usually you would go to 
 YouTube, find your song, copy URL, paste it to a online converter and then download it and do that for every song. 
 That's 5 steps that take some time! Instead, you can just type names of the songs you want to download, you don't even have 
 to get the URL of the song, and the program will find the most popular song with that name and download it. After you are 
