@@ -29,33 +29,25 @@ end
 
 def download_single_song(song_name, song_list_id, is_last_song)
     # This function downloads songs one by one    
-    if is_last_song
-        if Dir[song_list_id].empty?
-            Dir.mkdir(song_list_id)
-        end       
-        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
-        system formatted_command
+    
+    formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
+    system formatted_command
 
-        zipfile_name = "#{__dir__.to_s}/#{song_list_id}/YourSongs.zip"
-        folder_to_zip = "#{__dir__.to_s}/#{song_list_id}"
-        file_names = Dir.children(song_list_id)
+    return {song_name: song_name, finished: true}.to_json
+end
 
-        Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
-            file_names.each do |filename|
-                zipfile.add(filename, File.join(folder_to_zip, filename))
-            end
-        end 
+def zip_songs(dir_name) 
+    zipfile_name = "#{__dir__.to_s}/#{dir_name}/YourSongs.zip"
+    folder_to_zip = "#{__dir__.to_s}/#{dir_name}"
+    file_names = Dir.children(dir_name)
 
-        return {song_name: song_name, finished: true}.to_json
-    else
-        if Dir[song_list_id].empty?
-            Dir.mkdir(song_list_id)
-        end        
-        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
-        system formatted_command
+    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+        file_names.each do |filename|
+            zipfile.add(filename, File.join(folder_to_zip, filename))
+        end
+    end 
 
-        return {song_name: song_name, finished: false}.to_json
-    end
+    return {success: true}.to_json
 end
 
 before { 
@@ -88,12 +80,20 @@ post '/download' do
     download_songs(all_songs_to_download)        
 end
 
+post '/initializenewdir' do
+    Dir.mkdir(params['dir_name'])
+end
+
 post '/download_s' do
     content_type :json
     song_name = params['song_name']
     song_list_id = params['song_list_id']
     is_last_song = params['is_last_song']
     download_single_song(song_name, song_list_id, is_last_song)
+end
+
+post '/zipsongs' do
+    zip_songs(params['dir_name'])
 end
 
 options "*" do
