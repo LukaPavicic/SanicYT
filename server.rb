@@ -27,6 +27,37 @@ def download_songs(song_list)
     return {songs_id: temp_dir_name}.to_json
 end
 
+def download_single_song(song_name, song_list_id, is_last_song)
+    # This function downloads songs one by one    
+    if is_last_song
+        if Dir[song_list_id].empty?
+            Dir.mkdir(song_list_id)
+        end       
+        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
+        system formatted_command
+
+        zipfile_name = "#{__dir__.to_s}/#{song_list_id}/YourSongs.zip"
+        folder_to_zip = "#{__dir__.to_s}/#{song_list_id}"
+        file_names = Dir.children(song_list_id)
+
+        Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+            file_names.each do |filename|
+                zipfile.add(filename, File.join(folder_to_zip, filename))
+            end
+        end 
+
+        return {song_name: song_name, finished: true}.to_json
+    else
+        if Dir[song_list_id].empty?
+            Dir.mkdir(song_list_id)
+        end        
+        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
+        system formatted_command
+
+        return {song_name: song_name, finished: false}.to_json
+    end
+end
+
 before { 
     response.headers['Access-Control-Allow-Origin'] = '*' 
 }
@@ -55,6 +86,14 @@ post '/download' do
     content_type :json
     all_songs_to_download = params['songs'].split(',')
     download_songs(all_songs_to_download)        
+end
+
+post '/download_s' do
+    content_type :json
+    song_name = params['song_name']
+    song_list_id = params['song_list_id']
+    is_last_song = params['is_last_song']
+    download_single_song(song_name, song_list_id, is_last_song)
 end
 
 options "*" do
