@@ -18,3 +18,6 @@ My contact information:
 
 ## Contributing to this project
 I know this is a really small and simple project but if you have any creative ideas to add to this project you can submit a pull request which I will then review.
+
+## Update Logs
+You can check out the update log page [here](https://sanicyt.netlify.app/updatelog)
