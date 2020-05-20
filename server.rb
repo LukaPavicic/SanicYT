@@ -5,31 +5,7 @@ require 'zip'
 require 'rubygems'
 require 'fileutils'
 
-def download_songs(song_list)    
-    time = Time.new
-    temp_dir_name = "songs" + rand(100000..999999).to_s + time.strftime("%d%m%Y%H%M%S")
-    Dir.mkdir(temp_dir_name)
-    song_list.each { |song|
-        formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + temp_dir_name + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song + '"'
-        system formatted_command
-    }
-
-    zipfile_name = "#{__dir__.to_s}/#{temp_dir_name}/YourSongs.zip"
-    folder_to_zip = "#{__dir__.to_s}/#{temp_dir_name}"
-    file_names = Dir.children(temp_dir_name)
-
-    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
-        file_names.each do |filename|
-            zipfile.add(filename, File.join(folder_to_zip, filename))
-        end
-    end    
-
-    return {songs_id: temp_dir_name}.to_json
-end
-
-def download_single_song(song_name, song_list_id, is_last_song)
-    # This function downloads songs one by one    
-    
+def download_single_song(song_name, song_list_id, is_last_song)    
     formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
     system formatted_command
 
@@ -72,12 +48,6 @@ end
 get '/download_songs/:folder_name' do |folder_name|
     file_to_return = "./#{folder_name}/YourSongs.zip"    
     send_file file_to_return, :filename => "YourSongs.zip", :type => 'application/octet-stream'
-end
-
-post '/download' do
-    content_type :json
-    all_songs_to_download = params['songs'].split(',')
-    download_songs(all_songs_to_download)        
 end
 
 post '/initializenewdir' do
