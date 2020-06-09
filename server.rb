@@ -5,6 +5,9 @@ require 'json'
 require 'zip'
 require 'rubygems'
 require 'fileutils'
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 def download_single_song(song_name, song_list_id, is_last_song)    
     check_for_song_duration = 'youtube-dl --get-duration "ytsearch:' + song_name + '"'
