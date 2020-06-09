@@ -11,7 +11,6 @@ gem 'sinatra-cross_origin'
 gem 'bundler'
 gem 'whenever'
 gem 'youtube-dl.rb'
-gem 'sqlite3'
 
 group :production do
     gem 'puma'    
