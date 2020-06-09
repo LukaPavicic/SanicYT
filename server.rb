@@ -6,6 +6,8 @@ require 'rubygems'
 require 'fileutils'
 
 def download_single_song(song_name, song_list_id, is_last_song)    
+    check_for_song_duration = 'youtube-dl --get-duration "ytsearch:' + song_name + '"'
+    
     formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
     system formatted_command
 
