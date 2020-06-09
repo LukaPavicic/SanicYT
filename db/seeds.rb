@@ -1,0 +1,1 @@
+Info.create({songs_downloaded: 0})

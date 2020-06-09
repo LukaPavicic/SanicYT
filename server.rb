@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/cross_origin'
+require 'sinatra/activerecord'
 require 'json'
 require 'zip'
 require 'rubygems'
@@ -10,6 +11,9 @@ def download_single_song(song_name, song_list_id, is_last_song)
     
     formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
     system formatted_command
+
+    current_info = Info.first
+    current_info.update(songs_downloaded: current_info.songs_downloaded + 1)
 
     return {song_name: song_name, finished: true}.to_json
 end
@@ -43,6 +47,8 @@ set :max_age, "1728000"
 set :expose_headers, ['Content-Type']
 set :protection, :origin_whitelist => ['http://localhost:3000']
 
+set :database_file, "config/database.yml"
+
 get '/' do 
     'Welcome to SanicYT API! What are you doing here?'    
 end
@@ -50,6 +56,11 @@ end
 get '/download_songs/:folder_name' do |folder_name|
     file_to_return = "./#{folder_name}/YourSongs.zip"    
     send_file file_to_return, :filename => "YourSongs.zip", :type => 'application/octet-stream'
+end
+
+get '/songs_downloaded' do
+    songs_downloaded = Info.first.songs_downloaded
+    return {songs_downloaded: songs_downloaded}.to_json
 end
 
 post '/initializenewdir' do
@@ -76,6 +87,6 @@ options "*" do
     200
 end
 
-
+require './models'
 
 
