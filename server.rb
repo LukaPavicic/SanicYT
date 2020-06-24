@@ -1,15 +1,17 @@
 require 'sinatra'
 require 'sinatra/cross_origin'
+require 'sinatra/activerecord'
 require 'json'
 require 'zip'
 require 'rubygems'
 require 'fileutils'
 
-def download_single_song(song_name, song_list_id, is_last_song)    
-    check_for_song_duration = 'youtube-dl --get-duration "ytsearch:' + song_name + '"'
-    
+def download_single_song(song_name, song_list_id, is_last_song)
     formatted_command = 'youtube-dl -o "' + __dir__.to_s + '/' + song_list_id + '/%(title)s.%(ext)s" -x --audio-format mp3 "ytsearch:' + song_name + '"'
-    system formatted_command    
+    system formatted_command
+
+    songs_downloaded_stat = Statistic.where(name: 'songs_downloaded').first
+    songs_downloaded_stat.update(value: songs_downloaded_stat.value + 1)
 
     return {song_name: song_name, finished: true}.to_json
 end
@@ -75,5 +77,7 @@ options "*" do
    
     200
 end
+
+require './models'
 
 

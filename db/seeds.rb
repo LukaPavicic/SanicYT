@@ -1,0 +1,1 @@
+Statistic.create(name: 'songs_downloaded', value: 0)

@@ -1,2 +1,3 @@
-class Info < ActiveRecord::Base
+class Statistic < ActiveRecord::Base
+
 end
