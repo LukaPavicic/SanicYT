@@ -78,6 +78,10 @@ options "*" do
     200
 end
 
+get '/songs_downloaded_number' do
+  return {songs_downloaded: Statistic.where(name: 'songs_downloaded').first.value}.to_json
+end
+
 require './models'
 
 
