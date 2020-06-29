@@ -27,9 +27,9 @@ GEM
     nio4r (2.5.2)
     pg (1.2.3)
     pg (1.2.3-x64-mingw32)
-    puma (4.3.3)
+    puma (4.3.5)
       nio4r (~> 2.0)
-    rack (2.1.1)
+    rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
     rake (12.3.3)
