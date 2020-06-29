@@ -27,7 +27,7 @@ def zip_songs(dir_name)
         end
     end 
 
-    return {success: true}.to_json
+    return { success: true }.to_json
 end
 
 before { 
@@ -45,19 +45,23 @@ set :max_age, "1728000"
 set :expose_headers, ['Content-Type']
 set :protection, :origin_whitelist => ['http://localhost:3000']
 
+# Simple root route
 get '/' do 
     'Welcome to SanicYT API! What are you doing here?'    
 end
 
+# Route for downloading finished zip file
 get '/download_songs/:folder_name' do |folder_name|
     file_to_return = "./#{folder_name}/YourSongs.zip"    
     send_file file_to_return, :filename => "YourSongs.zip", :type => 'application/octet-stream'
 end
 
+# Route for creating new directory to store users songs temporarely
 post '/initializenewdir' do
     Dir.mkdir(params['dir_name'])
 end
 
+# Route for downloading single song from the list
 post '/download_s' do
     content_type :json
     song_name = params['song_name']
@@ -66,6 +70,7 @@ post '/download_s' do
     download_single_song(song_name, song_list_id, is_last_song)
 end
 
+# Route for zipping users song into a single file
 post '/zipsongs' do
     zip_songs(params['dir_name'])
 end
@@ -78,8 +83,9 @@ options "*" do
     200
 end
 
+# Route for retrieving number of songs downloaded globally
 get '/songs_downloaded_number' do
-  return {songs_downloaded: Statistic.where(name: 'songs_downloaded').first.value}.to_json
+  return { songs_downloaded: Statistic.where(name: 'songs_downloaded').first.value }.to_json
 end
 
 require './models'
